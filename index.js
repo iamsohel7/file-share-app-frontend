@@ -15,8 +15,8 @@ const emailForm = document.querySelector("#emailForm");
 
 const toast = document.querySelector(".toast");
 
-const baseURL = "https://innshare.herokuapp.com";
-const uploadURL = `${baseURL}/api/files`;
+const baseURL = "https://file-transfer-ap.herokuapp.com";
+const uploadURL = `${baseURL}/api/files/`;
 const emailURL = `${baseURL}/api/files/send`;
 
 const maxAllowedSize = 100 * 1024 * 1024; //100mb
@@ -28,7 +28,7 @@ browseBtn.addEventListener("click", () => {
 
 dropZone.addEventListener("drop", (e) => {
   e.preventDefault();
-  //   console.log("dropped", e.dataTransfer.files[0].name);
+   console.log("dropped", e.dataTransfer.files[0].name);
   const files = e.dataTransfer.files;
   if (files.length === 1) {
     if (files[0].size < maxAllowedSize) {
@@ -53,7 +53,7 @@ dropZone.addEventListener("dragover", (e) => {
 dropZone.addEventListener("dragleave", (e) => {
   dropZone.classList.remove("dragged");
 
-  console.log("drag ended");
+  //console.log("drag ended");
 });
 
 // file input change and uploader
@@ -78,11 +78,11 @@ fileURL.addEventListener("click", () => {
 });
 
 const uploadFile = () => {
-  console.log("file added uploading");
+  
 
   files = fileInput.files;
   const formData = new FormData();
-  formData.append("myfile", files[0]);
+  formData.append("myFile", files[0]);
 
   //show the uploader
   progressContainer.style.display = "block";
@@ -109,7 +109,9 @@ const uploadFile = () => {
   // listen for response which will give the link
   xhr.onreadystatechange = function () {
     if (xhr.readyState == XMLHttpRequest.DONE) {
-      onFileUploadSuccess(xhr.responseText);
+      console.log(xhr.responseText);
+       onFileUploadSuccess(xhr.responseText);
+       
     }
   };
 
@@ -127,7 +129,7 @@ const onFileUploadSuccess = (res) => {
   progressContainer.style.display = "none"; // hide the box
 
   const { file: url } = JSON.parse(res);
-  console.log(url);
+ 
   sharingContainer.style.display = "block";
   fileURL.value = url;
 };
